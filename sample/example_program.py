@@ -1,35 +1,15 @@
-# example_program.py
 from github_topic_scraper import GitHubTopicScraper
 import pandas as pd
 import os
 from pathlib import Path
 
 def analyze_topics():
-    # Get the current script's directory
-    script_dir = Path(__file__).parent.absolute()
-    
-    # Create a 'data' directory inside the script's directory
-    data_dir = script_dir / 'data'
-    topics_dir = data_dir / 'topics'
-    
-    # Create directories if they don't exist
-    data_dir.mkdir(exist_ok=True)
-    topics_dir.mkdir(exist_ok=True)
-    
-    # Print the locations where files will be stored
-    print(f"\nFile Locations:")
-    print(f"Base directory: {script_dir}")
-    print(f"Data directory: {data_dir}")
-    print(f"Topics directory: {topics_dir}")
-    
-    # Create a scraper instance with our explicit output directory
-    scraper = GitHubTopicScraper(output_dir=str(topics_dir))
+    # Create a scraper instance with custom output directory
+    scraper = GitHubTopicScraper(output_dir="downloaded_topics")
     
     try:
         # Scrape all topics and their repositories
-        topics_csv_path = data_dir / "all_topics.csv"
-        print(f"\nSaving topics to: {topics_csv_path}")
-        topics_df = scraper.scrape_all(topics_csv=str(topics_csv_path))
+        topics_df = scraper.scrape_all(topics_csv="all_topics.csv")
         
         # Example: Analyze the results
         print("\nAnalysis Results:")
@@ -39,14 +19,9 @@ def analyze_topics():
         total_repos = 0
         total_stars = 0
         
-        # List all created files
-        print("\nCreated Files:")
-        print(f"- {topics_csv_path}")
-        
         for topic in topics_df['Title']:
-            repo_file = topics_dir / f"{topic.lower().replace(' ', '_')}_repos.csv"
-            if repo_file.exists():
-                print(f"- {repo_file}")
+            repo_file = f"downloaded_topics/{topic.lower().replace(' ', '_')}_repos.csv"
+            if os.path.exists(repo_file):
                 repos_df = pd.read_csv(repo_file)
                 total_repos += len(repos_df)
                 total_stars += repos_df['stars'].sum()
