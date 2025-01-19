@@ -51,9 +51,9 @@ topics_df.head()
     - python
 
     - Try importing the package
-    - >>> from github_topic_scraper import GitHubTopicScraper
-    - >>> # If no error appears, the package is installed correctly
-    - >>> exit()
+    from github_topic_scraper import GitHubTopicScraper
+    >>> If no error appears, the package is installed correctly
+    exit()
 
 4. Run the sample file
     - if the files are being generated inside sample diretory the installation is a success
